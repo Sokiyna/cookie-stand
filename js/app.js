@@ -447,7 +447,7 @@ let cookiesStoresArr = [];
 
 let workingHour = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'];
 
-
+let totalOfTotal =0;
 
 function CookiesStore(shopLocation, minCustomer, maxCustomer, cookiesAvgSale) {
 
@@ -488,12 +488,13 @@ CookiesStore.prototype.getcustPerHour = function () {
 
 CookiesStore.prototype.getcookiesNum = function () {
 
-    for (let i = 0; i < this.custNum.length; i++) {
+    for (let i = 0; i < workingHour.length; i++) {
         let mult = this.custNum[i] * this.cookiesAvgSale;
         mult = Math.floor(mult)
 
-        this.cookiesNum.push(mult);
+        this.cookiesNum.push(Math.floor(this.custNum[i] * this.cookiesAvgSale));
         this.total += this.cookiesNum[i]
+        totalOfTotal+=this.cookiesNum[i]
 
     }
 
@@ -503,39 +504,14 @@ CookiesStore.prototype.getcookiesNum = function () {
 
 
 
-let seattle = new CookiesStore('seattle', 23, 65, 6.3);
-seattle.getcustPerHour();
-seattle.getcookiesNum();
-// console.log(seattle);
 
-
-let tokyo = new CookiesStore('tokyo', 3, 24, 1.2);
-tokyo.getcustPerHour();
-tokyo.getcookiesNum();
-// console.log(tokyo);
-
-let dubai = new CookiesStore('dubai', 11, 38, 3.7);
-dubai.getcustPerHour();
-dubai.getcookiesNum();
-// console.log(dubai);
-
-let paris = new CookiesStore('paris', 20, 38, 2.3);
-paris.getcustPerHour();
-paris.getcookiesNum();
-// console.log(paris);
-
-
-let lima = new CookiesStore('lima', 2, 16, 4.6);
-lima.getcustPerHour();
-lima.getcookiesNum();
-// console.log(lima);
 
 
 let parent = document.getElementById('parent');
 let table = document.createElement('table');
-let tr = document.createElement('tr');
 parent.appendChild(table);
-table.appendChild(tr)
+
+
 
 
 
@@ -543,19 +519,30 @@ table.appendChild(tr)
 
 
 //the header for the table
-CookiesStore.prototype.header = function () {
+ function header(){
+
+let tr = document.createElement('tr');
+table.appendChild(tr)
 
     let hoursHead = [' ', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', 'Daily Location Total'];
 
-    for (let i = 0; i < hoursHead.length; i++) {
+    let thStore = document.createElement('th');
+    tr.appendChild(thStore)
+    thStore.textContent = " ";
+      
+    for (let i = 0; i < workingHour.length; i++) {
 
         let th = document.createElement('th');
         tr.appendChild(th);
-        th.textContent = hoursHead[i]
-        tr.appendChild(th);
+        th.textContent = workingHour[i]
+        // tr.appendChild(th);
+
 
     }
 
+    let thDailyT = document.createElement('th');
+    tr.appendChild(thDailyT)
+    thDailyT.textContent = "Daily Location Total ";
 
 }
 
@@ -579,57 +566,58 @@ CookiesStore.prototype.render = function () {
     totalPerDay.textContent = this.total
 }
 
-CookiesStore.prototype.footer = function () {
+function footer()  {
 
 
-    let footer = document.createElement('tfoot');
+    let footer = document.createElement('tr');
+    table.appendChild(footer);
+
     let tdFooterTotal = document.createElement('td');
     footer.appendChild(tdFooterTotal);
     tdFooterTotal.textContent = 'Total'
 
-    let perHrSum = [];
 
+    // let perHrSum = [];
+
+    // for (let i = 0; i < workingHour.length; i++) {
+
+    //     let tdFooter = document.createElement('td')
+    //     footer.appendChild(tdFooter);
+
+    //     let perHrSumTotal = seattle.cookiesNum[i] + tokyo.cookiesNum[i] + dubai.cookiesNum[i] + paris.cookiesNum[i] + lima.cookiesNum[i];
+
+    //     perHrSum.push(perHrSumTotal)
+
+    //     tdFooter.textContent = perHrSumTotal;
+
+
+    // }
+
+
+    // let totalOfTotal = 0;
+    
+       
     for (let i = 0; i < workingHour.length; i++) {
 
-        let tdFooter = document.createElement('td')
-        footer.appendChild(tdFooter);
+        let perHr = 0;
+        for(let j=0; j< cookiesStoresArr.length; j++){
 
-        let perHrSumTotal = seattle.cookiesNum[i] + tokyo.cookiesNum[i] + dubai.cookiesNum[i] + paris.cookiesNum[i] + lima.cookiesNum[i];
+            perHr+=cookiesStoresArr[j].cookiesNum[i];
+            // totalOfTotal+=cookiesStoresArr[j].cookiesNum[i];
 
-        perHrSum.push(perHrSumTotal)
-
-        tdFooter.textContent = perHrSumTotal;
-
-
+        }
+        let tdFooterTt = document.createElement('td');
+        footer.appendChild(tdFooterTt);
+        tdFooterTt.textContent = perHr;
     }
 
-    table.appendChild(footer);
-
-    let totalOfTotal = 0;
     let tdFooterT = document.createElement('td');
     footer.appendChild(tdFooterT);
-
-    for (let i = 0; i < workingHour.length; i++) {
-
-        totalOfTotal += perHrSum[i];
-    }
-
     tdFooterT.textContent = totalOfTotal;
 
 
 }
 
-
-cookiesStoresArr[0].header()
-
-for (let i = 0; i < cookiesStoresArr.length; i++) {
-    cookiesStoresArr[i].getcustPerHour();
-    cookiesStoresArr[i].getcookiesNum();
-    cookiesStoresArr[i].render()
-
-
-}
-cookiesStoresArr[0].footer()
 
 
 
@@ -672,7 +660,7 @@ function addNewCookies(event) {
 
    
 
-    cookiesStoresArr[0].header();
+    header();
     
     for (let i = 0; i < cookiesStoresArr.length; i++) {
        
@@ -682,9 +670,48 @@ function addNewCookies(event) {
     
     }
    
-    cookiesStoresArr[0].footer()
+    footer()
     
 }
+
+let seattle = new CookiesStore('seattle', 23, 65, 6.3);
+// seattle.getcustPerHour();
+// seattle.getcookiesNum();
+// console.log(seattle);
+
+
+let tokyo = new CookiesStore('tokyo', 3, 24, 1.2);
+// tokyo.getcustPerHour();
+// tokyo.getcookiesNum();
+// console.log(tokyo);
+
+let dubai = new CookiesStore('dubai', 11, 38, 3.7);
+// dubai.getcustPerHour();
+// dubai.getcookiesNum();
+// console.log(dubai);
+
+let paris = new CookiesStore('paris', 20, 38, 2.3);
+// paris.getcustPerHour();
+// paris.getcookiesNum();
+// console.log(paris);
+
+
+let lima = new CookiesStore('lima', 2, 16, 4.6);
+// lima.getcustPerHour();
+// lima.getcookiesNum();
+// console.log(lima);
+
+
+header();
+
+for (let i = 0; i < cookiesStoresArr.length; i++) {
+    cookiesStoresArr[i].getcustPerHour();
+    cookiesStoresArr[i].getcookiesNum();
+    cookiesStoresArr[i].render()
+
+
+}
+footer();
 
 
 
