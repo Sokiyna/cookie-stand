@@ -492,9 +492,9 @@ CookiesStore.prototype.getcookiesNum = function () {
         let mult = this.custNum[i] * this.cookiesAvgSale;
         mult = Math.floor(mult)
 
-        this.cookiesNum.push(Math.floor(this.custNum[i] * this.cookiesAvgSale));
-        this.total += this.cookiesNum[i]
-        totalOfTotal+=this.cookiesNum[i]
+        this.cookiesNum.push(mult );
+        this.total += this.cookiesNum[i];
+        totalOfTotal+=this.cookiesNum[i];
 
     }
 
@@ -603,7 +603,6 @@ function footer()  {
         for(let j=0; j< cookiesStoresArr.length; j++){
 
             perHr+=cookiesStoresArr[j].cookiesNum[i];
-            // totalOfTotal+=cookiesStoresArr[j].cookiesNum[i];
 
         }
         let tdFooterTt = document.createElement('td');
@@ -634,19 +633,19 @@ totalDailyCookies.addEventListener('submit', addNewCookies)
 function addNewCookies(event) {
 
     
-
+    totalOfTotal = 0;
     event.preventDefault();
 
     let shopLocation = event.target.locationfield.value;
     console.log(shopLocation);
 
 
-    let minCustomer = event.target.custMinNumField.value;
+    let minCustomer = parseInt (event.target.custMinNumField.value);
     console.log(minCustomer);
 
-    let maxCustomer = event.target.custMaxNumField.value;
+    let maxCustomer =  parseInt (event.target.custMaxNumField.value);
     console.log(maxCustomer);
-    let cookiesAvgSale = event.target.avgCookieSaleField.value;
+    let cookiesAvgSale = parseInt(event.target.avgCookieSaleField.value);
     console.log(cookiesAvgSale);
 
     let newAddedLocation = new CookiesStore(shopLocation, minCustomer, maxCustomer, cookiesAvgSale);
