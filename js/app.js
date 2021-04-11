@@ -656,20 +656,23 @@ function addNewCookies(event) {
 
     
     table.textContent = "";
+   
 
    
 
     header();
     
     for (let i = 0; i < cookiesStoresArr.length; i++) {
-       
+        
+        
         cookiesStoresArr[i].getcustPerHour();
         cookiesStoresArr[i].getcookiesNum();
-        cookiesStoresArr[i].render()
-    
+        cookiesStoresArr[i].render();
+
     }
-   
     footer()
+
+   
     
 }
 
@@ -701,16 +704,16 @@ let lima = new CookiesStore('lima', 2, 16, 4.6);
 // console.log(lima);
 
 
-header();
+// header();
 
-for (let i = 0; i < cookiesStoresArr.length; i++) {
-    cookiesStoresArr[i].getcustPerHour();
-    cookiesStoresArr[i].getcookiesNum();
-    cookiesStoresArr[i].render()
+// for (let i = 0; i < cookiesStoresArr.length; i++) {
+//     cookiesStoresArr[i].getcustPerHour();
+//     cookiesStoresArr[i].getcookiesNum();
+//     cookiesStoresArr[i].render()
 
 
-}
-footer();
+// }
+// footer();
 
 
 
